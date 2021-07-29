@@ -71,3 +71,9 @@ git branch -M master
 git remote add origin git@github.com:budougumi0617/xxxxx.git
 git push origin master
 ```
+
+## その他
+毎回gitって打つのダルいのでエイリアス貼っておく。
+```bash
+echo "alias g='git'" >> ~/.bashrc_bk && source ~/.bashrc
+```
