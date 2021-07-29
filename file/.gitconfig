@@ -1,0 +1,19 @@
+[user]
+  name = budougumi0617
+  email = budougumi0617@gmail.com
+[color]
+  ui = auto
+[alias]
+  br = branch
+  co = checkout
+  sw = switch
+  rs = restore
+  ci = commit
+  st = status
+  graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short
+  list = log --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --date=short
+  df = diff
+  review = "!f(){ git fetch -f upstream pull/$1/head:review;};f"
+  stl = !git stash list | fzf --preview 'echo {} | grep -o stash@{.*} | xargs git stash show -p --color=always' --height 90% | grep -o stash@{.*}
+[core]
+    editor = vim
