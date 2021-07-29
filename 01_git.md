@@ -77,3 +77,8 @@ git push origin master
 ```bash
 echo "alias g='git'" >> ~/.bashrc_bk && source ~/.bashrc
 ```
+
+## 参考リンク
+- https://docs.github.com/ja/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+- https://qiita.com/tamorieeeen/items/c24f8285448b607b12dd
+- https://github.com/KasuyaMofu/hidennotare/blob/main/01-git.md
