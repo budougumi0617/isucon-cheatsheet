@@ -42,10 +42,10 @@ $ sudo mysqldumpslow /var/log/mysql/slow.log
 ## pt-query-digestで解析する
 sudoつけるのわすれないこと
 ```bash
-$ sudo pt-query-digest /var/log/mysql/slow.log
+$ sudo pt-query-digest /var/log/mysql/slow.log > slow_dgst_`date "+%Y%m%d_%H%M%S"`.log
+$ ls
+slow_dgst_20210731_151419.log
 ```
-
-
 
 
 
