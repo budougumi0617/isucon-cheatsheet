@@ -59,6 +59,13 @@ $ mysqldump --single-transaction -u isucon -pisucon isuumo > /tmp/isuumo_dump.sq
 $ scp isu10A:/tmp/isuumo_dump.sql .
 ```
 
+## テーブル構造をtblsする。
+リモートから接続できるようになっていれば、ローカルで生成できる。
+
+```bash
+$ tbls doc my://isucon:isucon@${REMOTE_HOST}:3306/isuumo ./doc/schema
+```
+
 ## チューニング
 - https://gist.github.com/south37/d4a5a8158f49e067237c17d13ecab12a#innodb-buffer
 - http://www.slideshare.net/kazeburo/mysql-casual7isucon
