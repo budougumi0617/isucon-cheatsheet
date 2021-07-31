@@ -80,5 +80,6 @@ isucon@ip-333-333-333-333:~$
 
 
 ## 参考
-https://tkmr.hatenablog.com/entry/2017/10/25/201426
-http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/
+- https://tkmr.hatenablog.com/entry/2017/10/25/201426
+- http://tatamo.81.la/blog/2018/09/16/isucon8-qual-2/
+- https://support.kagoya.jp/flex/manual/ssh_rsa/rsa_pub.html
