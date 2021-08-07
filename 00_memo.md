@@ -29,6 +29,13 @@ WantedBy=multi-user.target
 
 ```
 
+## OSのバージョン確認
+https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/linux-installation/install-infrastructure-monitoring-agent-linux/
+
+
+## Linuxサーバにログインしたらいつもやっているオペレーション - ゆううきブログ
+https://blog.yuuk.io/entry/linux-server-operations
+
 ## 参考
 - https://shiningcureseven.hatenablog.com/entry/2020/10/10/174514
 - https://qiita.com/DQNEO/items/0b5d0bc5d3cf407cb7ff

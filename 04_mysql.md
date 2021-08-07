@@ -59,6 +59,19 @@ $ mysqldump --single-transaction -u isucon -pisucon isuumo > /tmp/isuumo_dump.sq
 $ scp isu10A:/tmp/isuumo_dump.sql .
 ```
 
+## データ量
+```bash
+$ mysql -uisucon -pisucon isuumo -e "SELECT table_name, engine, table_rows, avg_row_length, floor((data_length+index_length)/1024/1024) as allMB, floor((data_length)/1024/1024) as dMB, floor((index_length)/1024/1024) as iMB FROM information_schema.tables WHERE table_schema=database() ORDER BY (data_length+index_length) DESC;"
+mysql: [Warning] Using a password on the command line interface can be insecure.
++------------+--------+------------+----------------+-------+------+------+
+| table_name | engine | table_rows | avg_row_length | allMB | dMB  | iMB  |
++------------+--------+------------+----------------+-------+------+------+
+| estate     | InnoDB |      29182 |            521 |    14 |   14 |    0 |
+| chair      | InnoDB |      29287 |            483 |    13 |   13 |    0 |
++------------+--------+------------+----------------+-------+------+------+
+
+```
+
 ## テーブル構造をtblsする。
 リモートから接続できるようになっていれば、ローカルで生成できる。
 

@@ -275,10 +275,37 @@ Aug 01 02:11:20 ******** isuumo[9751]: (9751) 2021/08/01 02:11:20.314206 {"level
 起動できたらNewRelic OneでAPMのページをみてみる。
 
 
+## logを取り込む方法
+一番雑な取り込み方法は`journald`経由。rootモードじゃないと取り込めないが、デフォルトはルートモードのはず。
+
+YMLをコピーして編集する。**logging.yml**という名前でコピーすること。
+https://docs.newrelic.com/jp/docs/logs/enable-log-management-new-relic/enable-log-monitoring-new-relic/forward-your-logs-using-infrastructure-agent/#enable
+
+```bash
+$ sudo cp /etc/newrelic-infra/logging.d/systemd.yml.example /etc/newrelic-infra/logging.d/logging.yml
+$ cat /etc/newrelic-infra/logging.d/logging.yml
+###############################################################################
+# Log forwarder configuration file example                                    #
+# Source: systemd                                                             #
+# Available customization parameters: attributes, max_line_kb, pattern        #
+###############################################################################
+logs:
+  - name: isuumo
+    systemd: isuumo.go
+
+```
+
+サービスを再起動する。
+```bash
+sudo systemctl restart newrelic-infra.service
+```
+
+ただし`systemctl status newrelic-infra`をみてfluent-bitがうまく起動していなかったら諦めたほうがよい。
 
 ## パージ方法
 ```bash
 $ sudo systemctl stop newrelic-infra.service
+$ sudo systemctl disable newrelic-infra.service
 ```
 
 アプリのコードは地道に削除するしかない…
