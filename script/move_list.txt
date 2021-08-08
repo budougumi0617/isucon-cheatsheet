@@ -3,3 +3,4 @@
 /etc/nginx/nginx.conf
 /etc/sysctl.conf
 /etc/security/limits.conf
+/etc/netdata/netdata.conf

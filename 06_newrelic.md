@@ -214,6 +214,27 @@ index 519d16f..a79c4cd 100644
         e.POST("/initialize", initialize)
 ```
 
+```go
+nrecho "github.com/newrelic/go-agent/v3/integrations/nrecho-v3"
+"github.com/newrelic/go-agent/v3/newrelic"
+
+
+app, nrerr := newrelic.NewApplication(
+              newrelic.ConfigAppName("ISUUMO"),
+               newrelic.ConfigFromEnvironment(),
+               newrelic.ConfigDistributedTracerEnabled(true),
+               newrelic.ConfigDebugLogger(os.Stdout),
+       )
+       if nrerr != nil {
+               os.Exit(1)
+       }
+```
+
+```go
+// nrecho
+e.Use(nrecho.Middleware(app))
+```
+
 ### SQLパーサーを追加する
 
 `file/go/newrelic_query_parser.go` を入れておく。そしてmain.goを変更する  
@@ -244,6 +265,16 @@ index 519d16f..94a7735 100644
         if err != nil {
                 if err == sql.ErrNoRows {
                         c.Echo().Logger.Infof("requested id's chair not found : %v", id)
+```
+
+```go
+txn := nrecho.FromContext(c)
+defer txn.End()
+
+s := createDataStoreSegment(query, id)
+s.StartTime = txn.StartSegmentNow()
+
+s.End()
 ```
 
 ### ビルドして起動する
@@ -301,6 +332,15 @@ sudo systemctl restart newrelic-infra.service
 ```
 
 ただし`systemctl status newrelic-infra`をみてfluent-bitがうまく起動していなかったら諦めたほうがよい。
+
+
+### logs in context対応
+```go
+
+// c.Echo().Logger をlogger.... に一括置換する。
+c.Echo().Logger
+logger.WithContext(c.Request().Context())
+```
 
 ## パージ方法
 ```bash

@@ -1,11 +1,13 @@
 #!/bin/bash -eu
 
+# つかわないほうがいい！！！！！
+
 # ref: https://github.com/KasuyaMofu/hidennotare/blob/1ccca56ab52c0c1cf176a4cf1f46d6e8021881ae/02-middleware.md
 # 設定ファイルをシンボリックリンクで見るようにしてgit repoで管理するためのスクリプト
 # まとめて確認
-# cat addfile.lst | xargs -L 1 ls -l
+# cat move_list.txt | xargs -L 1 ls -l
 # まとめて追加
-# cat addfile.lst | xargs -L 1 ./mover.sh
+# cat move_list.txt | xargs -L 1 ./mover.sh
 
 PWDDIR=`pwd`
 function replace-file () {

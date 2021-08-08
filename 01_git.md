@@ -11,6 +11,7 @@ Host github.com
 終わったらキーを使う設定をしておく。
 ```bash
 ssh-keygen -t ed25519 -C "budougumi0617@gmail.com"
+chmod 600  ~/.ssh/id_ed25519.pub
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 chmod 600 ~/.ssh/config
@@ -67,6 +68,7 @@ git init
 git add .
 # ゴミが入った場合やり直す
 git rm --cached -r .
+git commit -m "initial commit"
 git branch -M master
 git remote add origin git@github.com:budougumi0617/xxxxx.git
 git push origin master
