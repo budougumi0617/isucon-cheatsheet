@@ -4,3 +4,4 @@
 /etc/sysctl.conf
 /etc/security/limits.conf
 /etc/netdata/netdata.conf
+/etc/netdata/apps_groups.conf

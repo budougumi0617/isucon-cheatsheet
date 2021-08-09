@@ -7,6 +7,7 @@ sudo systemctl disable apparmor
 # いろいろな情報を出力しておく
 # ./gh_push_memo.sh 1 "`ssh isu10A sudo cat /var/log/isucon/info.txt`"
 sudo mkdir /var/log/isucon
+sudo mkdir /tmp/isucon
 echo "----- OS info ----- " | sudo tee /var/log/isucon/info.txt
 cat /etc/os-release | sudo tee -a /var/log/isucon/info.txt
 echo -e "\n\n----- CPU info ----- " | sudo tee -a /var/log/isucon/info.txt
@@ -21,8 +22,9 @@ echo -e "\n\n----- Active Service info ----- " | sudo tee -a /var/log/isucon/inf
 sudo systemctl list-unit-files --type=service | grep service | sudo tee -a /var/log/isucon/info.txt
 
 ## 鍵情報の設定
-curl https://github.com/{budougumi0617,applepine1125}.keys >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
+# これはセットアップ手順の中でやっているはず。
+# curl https://github.com/{budougumi0617,applepine1125}.keys >> ~/.ssh/authorized_keys
+# chmod 600 ~/.ssh/authorized_keys
 
 ## 色々設定
 cat <<EOF >> ~/.gitconfig
