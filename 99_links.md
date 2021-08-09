@@ -6,3 +6,11 @@
 - https://shiningcureseven.hatenablog.com/entry/2020/10/10/174514
 - https://gist.github.com/catatsuy/e627aaf118fbe001f2e7c665fda48146
     - notify_slackとかのってる
+- https://gist.github.com/sawarame/9502325
+    - my.cnfの設定いろいろ
+## 参考リポジトリや参加レポート
+- https://github.com/mokemoko/isucon10-q
+- https://akouryy.hatenablog.jp/entry/2020/09/13/130415
+- https://matsuu.hatenablog.com/entry/2020/09/13/131145
+- https://github.com/kazeburo/isucon10-qualify-fork
+- https://kazeburo.hatenablog.com/entry/2020/12/24/105837
