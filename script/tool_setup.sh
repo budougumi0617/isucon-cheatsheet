@@ -92,3 +92,7 @@ echo "https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent
 
 # AppArmorを修正した場合は再起動が必要
 echo "need reboot!: sudo shutdown -r now"
+
+# MySQL向けの下準備
+sudo touch /var/log/mysql/slow.log
+sudo chmod -R 777 /var/log/mysql

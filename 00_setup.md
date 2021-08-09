@@ -292,8 +292,15 @@ my.cnfを変更しておく。
 [mysqld]
 slow_query_log = 1
 slow_query_log_file = /var/log/mysql/slow.log
-long_query_time = 0
+long_query_time = 0.1
 bind-address = 0.0.0.0
+```
+念の為ファイル作成と手元でクエリ解析できるように権限変えておく
+
+```bash
+# tool_setup.shでやってあるので不要。
+sudo touch /var/log/mysql/slow.log
+sudo chmod -R 777 /var/log/mysql
 ```
 
 ユーザーもリモートアクセスできるようにしておく。
@@ -304,11 +311,16 @@ sudo mysql -h 127.0.0.1 -uisucon -pisucon -e "grant all privileges on *.* to isu
 
 終わったら再起動する。
 ```
-$ systemctl list-unit-files --type=service | grep sql
+systemctl list-unit-files --type=service | grep sql
 mysql.service                                  enabled
 
-$ sudo systemctl restart mysql
-$ sudo systemctl restart isuumo.go
+sudo systemctl restart mysql
+sudo systemctl restart isuumo.go
+```
+
+設定が変わっているか確認する。
+```bash
+mysql -uisucon -pisucon -e "show variables like 'slow_query%';"
 ```
 
 ダンプしてローカルでも見れるようにするのと、データ量を見ておく。
@@ -320,9 +332,24 @@ mysql -uisucon -pisucon isuumo -e "SELECT table_name, engine, table_rows, avg_ro
 ```
 
 リモートアクセスできるようになったらローカルPCのgit repoで以下のコマンドを使ってテーブル情報を作っておく。
-さっきの
+さっきのデータ量もローカルPCからissueにコメントしておく
 ```bash
 tbls doc my://isucon:isucon@${REMOTE_HOST}:3306/isuumo ./doc/schema
 ./gh_push_memo.sh 1 "`ssh isu11A cat /tmp/isucon/mysql_data_size.txt`"
 ```
 
+#### netdataの設定変更しておく
+まず、19999ポートにアクセスしてnetdataが起動していることを確認する。
+
+`/etc/netdata/apps_groups.conf` を編集してアプリのメトリクスだけを見れるようにしておく。
+
+```
+# こんな感じの設定を書いておく。
+issumo: *isuumo*
+```
+
+https://app.netdata.cloud/ を開いてadd nodesしておく。  
+終わったら再起動。
+```bash
+sudo systemctl restart netdata
+```
