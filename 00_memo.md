@@ -30,7 +30,9 @@ WantedBy=multi-user.target
 ```
 
 ## OSのバージョン確認
-https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/linux-installation/install-infrastructure-monitoring-agent-linux/
+```bash
+cat /etc/os-release
+```
 
 
 ## Linuxサーバにログインしたらいつもやっているオペレーション - ゆううきブログ

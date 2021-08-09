@@ -1,5 +1,25 @@
 #!/bin/bash -eu
 
+## AppArmorが有効だとシンボリックリンクを/etc配下にはれない。
+sudo systemctl stop apparmor
+sudo systemctl disable apparmor
+
+# いろいろな情報を出力しておく
+# ./gh_push_memo.sh 1 "`ssh isu10A sudo cat /var/log/isucon/info.txt`"
+sudo mkdir /var/log/isucon
+echo "----- OS info ----- " | sudo tee /var/log/isucon/info.txt
+cat /etc/os-release | sudo tee -a /var/log/isucon/info.txt
+echo -e "\n\n----- CPU info ----- " | sudo tee -a /var/log/isucon/info.txt
+cat /proc/cpuinfo | sudo tee -a /var/log/isucon/info.txt
+echo -e "\n\n----- Disk info ----- " | sudo tee -a /var/log/isucon/info.txt
+sudo df -Th | sudo tee -a /var/log/isucon/info.txt
+echo -e "\n\n----- Network info ----- " | sudo tee -a /var/log/isucon/info.txt
+sudo ip a | sudo tee -a /var/log/isucon/info.txt
+echo -e "\n\n----- Process info ----- " | sudo tee -a /var/log/isucon/info.txt
+sudo ps auxf | sudo tee -a /var/log/isucon/info.txt
+echo -e "\n\n----- Active Service info ----- " | sudo tee -a /var/log/isucon/info.txt
+sudo systemctl list-unit-files --type=service | grep service | sudo tee -a /var/log/isucon/info.txt
+
 ## 鍵情報の設定
 curl https://github.com/{budougumi0617,applepine1125}.keys >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
@@ -65,3 +85,8 @@ sudo apt-get install percona-toolkit
 
 # after install newrelic
 #  echo "enable_process_metrics: true" | sudo tee -a /etc/newrelic-infra.yml
+echo "install newrelic from below link"
+echo "https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/linux-installation/install-infrastructure-monitoring-agent-linux/"
+
+# AppArmorを修正した場合は再起動が必要
+echo "need reboot!: sudo shutdown -r now"

@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-# つかわないほうがいい！！！！！
+# うまくいかないときはAppArmorを無効にしているか確認すること
 
 # ref: https://github.com/KasuyaMofu/hidennotare/blob/1ccca56ab52c0c1cf176a4cf1f46d6e8021881ae/02-middleware.md
 # 設定ファイルをシンボリックリンクで見るようにしてgit repoで管理するためのスクリプト
