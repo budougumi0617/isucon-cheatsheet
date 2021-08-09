@@ -7,7 +7,7 @@
 # まとめて確認
 # cat ~/isucon-cheatsheet/script/move_list.txt | xargs -L 1 ls -l
 # まとめて追加
-# cat ~/isucon-cheatsheet/script/move_list.txt | xargs -L 1 ls -l ~/isucon-cheatsheet/script/mover.sh
+# cat ~/isucon-cheatsheet/script/move_list.txt | xargs -L 1 ~/isucon-cheatsheet/script/mover.sh
 
 PWDDIR=`pwd`
 function replace-file () {

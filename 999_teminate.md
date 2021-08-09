@@ -13,3 +13,5 @@ sudo systemctl disable netdata
 ## nginxのログ出力を変えておく？
 
 ## MySQLの設定を変えておく
+
+## tmpディレクトリの中身を削除しておく。
