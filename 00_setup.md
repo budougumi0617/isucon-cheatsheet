@@ -353,3 +353,23 @@ https://app.netdata.cloud/ を開いてadd nodesしておく。
 ```bash
 sudo systemctl restart netdata
 ```
+
+### アプリケーションを確認してやること
+### Makefile書く
+ベンチマーク実行時の流れなどをMakefileに書いておくこと
+```
+all: isuumo
+
+isuumo: *.go
+        GOOS=linux GOARCH=amd64 go build -o isuumo
+
+bench:
+        sudo truncate --size 0 /var/log/mysql/slow.log
+        sudo truncate --size 0 /var/log/nginx/access.log
+        sudo systemctl restart nginx.service
+        sudo systemctl restart isuumo.go
+        cd ~/isuumo/bench; ./bench --target-url http://localhost:80
+
+alp:
+        alp -c alp.yaml ltsv
+```

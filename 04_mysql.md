@@ -90,6 +90,14 @@ innodb_flush_log_at_trx_commit = 2 # 1に設定するとトランザクション
 innodb_flush_method = O_DIRECT # データファイル、ログファイルの読み書き方式を指定する(実験する価値はある)
 ```
 
+```
+disable-log-bin
+innodb_doublewrite = 0
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method = O_DIRECT
+innodb_adaptive_hash_index = 0
+```
+
 ## 読んでおいたほうが良さそうなスクリプト
 - https://github.com/south37/isucon-settings/blob/master/scripts/check_mysql.sh
 - https://github.com/catatsuy/memo_isucon/blob/master/etc/my.cnf

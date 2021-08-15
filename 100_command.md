@@ -34,6 +34,17 @@ WantedBy=multi-user.target
 cat /etc/os-release
 ```
 
+## ローカルでスロークエリ確認する
+```bash
+scp isu11A:/var/log/mysql/slow.log .
+pt-query-digest slow.log > slow_dgst_`date "+%Y%m%d_%H%M%S"`.log
+```
+
+## index貼る
+```sql
+ALTER TABLE テーブル名 ADD INDEX インデックス名(カラム名);
+```
+
 
 ## Linuxサーバにログインしたらいつもやっているオペレーション - ゆううきブログ
 https://blog.yuuk.io/entry/linux-server-operations

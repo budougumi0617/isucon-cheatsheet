@@ -48,7 +48,49 @@ slow_dgst_20210731_151419.log
 ```
 
 
+## index貼る
+`pt-query-digest` コマンドで解析した内容を使ってindex貼っていく。
+出力した解析結果からSQLを持ってきてEXPLAINもしておくと確実。貼った後にrowsとかkeyが変わっていればindexが効いている。
 
+
+```sql
+mysql> EXPLAIN SELECT * FROM chair WHERE stock > 0 ORDER BY price ASC, id ASC LIMIT 20\G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: chair
+   partitions: NULL
+         type: ALL
+possible_keys: NULL
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 29411
+     filtered: 33.33
+        Extra: Using where; Using filesort
+1 row in set, 1 warning (0.01 sec)
+
+mysql> ALTER TABLE isuumo.chair ADD INDEX idx_chair_price_id(price, id);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> EXPLAIN SELECT * FROM chair WHERE stock > 0 ORDER BY price ASC, id ASC LIMIT 20\G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: chair
+   partitions: NULL
+         type: index
+possible_keys: NULL
+          key: idx_chair_price_id
+      key_len: 8
+          ref: NULL
+         rows: 20
+     filtered: 33.33
+        Extra: Using where
+1 row in set, 1 warning (0.02 sec)
+
+```
 
 ## あとで読んでおいたほうが良さそうなスクリプト
 - https://github.com/south37/isucon-settings/blob/master/scripts/check_mysql.sh
