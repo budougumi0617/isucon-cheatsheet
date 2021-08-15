@@ -107,7 +107,41 @@ https://github.com/tkuchiki/alp/blob/main/docs/usage_samples.ja.md
 sshの設定が完了しているならばこれで取得できる。
 ```bash
 $ scp isu10A:/var/log/nginx/access.log .
-Enter passphrase for key '/Users/budougumi0617/.ssh/id_ed25519':
+```
+
+## 設定
+毎回コマンドラインオプション使うのがめんどいときはこんな感じ
+```yaml
+file:                       # string
+  "/var/log/nginx/access.log"
+sort:                       # max|min|avg|sum|count|uri|method|max-body|min-body|avg-body|sum-body|p1|p50|p99|stddev
+  "sum"
+reverse:                    # boolean
+  true
+query_string:               # boolean
+query_string_ignore_values: # boolean
+decode_uri:                 # boolean
+format:                     # string
+limit:                      # 5000
+noheaders:                  # boolean
+show_footers:               # boolean
+matching_groups:            # array
+  - "/api/estate/.+"
+  - "/api/recommended_estate/.+"
+  - "/api/chair/.+"
+filters:                    # string
+output:                     # string(comma separated)
+pos_file:                   # string
+nosave_pos:                 # boolean
+percentiles:                # array
+ltsv:
+  apptime_label: # apptime
+  status_label:  # status code
+  size_label:    # size
+  method_label:  # method
+  uri_label:     # uri
+  time_label:    # time
+
 ```
 
 ## 参考
