@@ -1,0 +1,8 @@
+sort:                       # max|min|avg|sum|count|uri|method|max-body|min-body|avg-body|sum-body|p1|p50|p99|stddev
+  "sum"
+reverse:                    # boolean
+  true
+matching_groups:            # array
+  - "/api/estate/.+"
+  - "/api/recommended_estate/.+"
+  - "/api/chair/.+"

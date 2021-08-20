@@ -45,6 +45,11 @@ pt-query-digest slow.log > slow_dgst_`date "+%Y%m%d_%H%M%S"`.log
 ALTER TABLE テーブル名 ADD INDEX インデックス名(カラム名);
 ```
 
+## nginxの設定確認
+```bash
+nginx -t
+```
+
 
 ## Linuxサーバにログインしたらいつもやっているオペレーション - ゆううきブログ
 https://blog.yuuk.io/entry/linux-server-operations
