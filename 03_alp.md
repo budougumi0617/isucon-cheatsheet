@@ -110,7 +110,7 @@ $ scp isu10A:/var/log/nginx/access.log .
 ```
 
 ## 設定
-毎回コマンドラインオプション使うのがめんどいときはこんな感じ
+毎回コマンドラインオプション使うのがめんどいときはこんな感じ。`-c CONFIG_FILE` で呼び出せる。
 ```yaml
 file:                       # string
   "/var/log/nginx/access.log"
