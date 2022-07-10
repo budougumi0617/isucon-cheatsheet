@@ -105,3 +105,4 @@ innodb_adaptive_hash_index = 0
 
 ## 参考
 - https://kazegahukeba.hatenablog.com/entry/2019/09/13/015113
+- https://gist.github.com/yoku0825/ea57b64d26dc645358f2de87f6ef8518
