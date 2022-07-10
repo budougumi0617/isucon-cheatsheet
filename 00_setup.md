@@ -13,7 +13,9 @@
 `isucon`ユーザーになっているか確認する。まずログイン用に鍵の登録をする。
 
 ```bash
-curl https://github.com/{budougumi0617,applepine1125}.keys >> ~/.ssh/authorized_keys
+mkdir ~/.ssh
+touch  ~/.ssh/authorized_keys
+curl https://github.com/{budougumi0617,glassmonkey,yopidax}.keys >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 ```
 
