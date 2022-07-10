@@ -16,7 +16,7 @@ index 2aedc7f..42fd86a 100644
         "strings"
 
 +       _ "net/http/pprof"
-+
++       "github.com/felixge/fgprof"
         _ "github.com/go-sql-driver/mysql"
         "github.com/jmoiron/sqlx"
         "github.com/labstack/echo"
@@ -24,18 +24,18 @@ index 2aedc7f..42fd86a 100644
  }
 
  func main() {
-+       runtime.SetBlockProfileRate(1)
-+       runtime.SetMutexProfileFraction(1)
++       http.DefaultServeMux.Handle("/debug/fgprof", fgprof.Handler())
 +       go func() {
-+               log.Println(http.ListenAndServe("0.0.0.0:6060", nil))
++              log.Println(http.ListenAndServe(":6060", nil))
 +       }()
+
         // Echo instance
         e := echo.New()
         e.Debug = true
 
 ```
 
-`make`して再ビルド、再起動しておく。graphvizをインストールしておく。
+`make`して再ビルド、再起動しておく。
 ```
 $ pwd
 /home/isucon/isuumo/webapp/go
@@ -44,25 +44,22 @@ $ sudo systemctl restart isuumo.go
 $ sudo apt install graphviz
 ```
 
-EC2のセキュリティグループで1080ポートを開放しておく。ベンチ回しつつ以下のコマンドで計測を開始する。  
+EC2のセキュリティグループで6060ポートを開放しておく。ベンチ回しつつ以下のコマンドで計測を開始する。  
 実行ディレクトリはバイナリがあるディレクトリ。`isuumo`はバイナリファイル名。
 
+ベンチマーク実行中に次のようにローカルマシンからアクセスすれば開ける。
 ```
-$ go tool pprof -seconds 90 -http="0.0.0.0:1080" isuumo http://localhost:6060/debug/pprof/profile
-Fetching profile over HTTP from http://localhost:6060/debug/pprof/profile?seconds=90
-Please wait... (1m30s)
-Saved profile in /home/isucon/pprof/pprof.isuumo.samples.cpu.001.pb.gz
-Serving web UI on http://0.0.0.0:1080
-Couldn't find a suitable web browser!
-Set the BROWSER environment variable to your desired browser.
+$ go tool pprof --http=:6060 http://${リモートサーバのIP}:6060/debug/fgprof?seconds=10
 ```
 
 これでリモートからも結果を確認できる。
 
-再度結果を見たい場合はファイルを使う
+再度結果を見たい場合はファイルを使う。ローカルマシンから次のように実行する。
 ```bash
-$ go tool pprof -seconds 90 -http="0.0.0.0:1080" isuumo /home/isucon/pprof/pprof.isuumo.samples.cpu.001.pb.gz
+curl -so pprof.trace http://${リモートサーバのIP}:6060/debug/fgprof?seconds=10
+go tool pprof --http=:6061 pprof.trace
 ```
 
 ## 参考
-- https://blog.zoe.tools/entry/2020/07/26/181836
+- https://qiita.com/shiimaxx/items/edb56b3e928d2438e769
+- https://www.mobtown.jp/article/fgprof/

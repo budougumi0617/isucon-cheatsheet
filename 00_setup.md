@@ -95,14 +95,16 @@ git init
 echo "*.png" >> .gitignore
 echo "*.jpg" >> .gitignore
 echo "*.jpeg" >> .gitignore
+echo "*.pdf" >> .gitignore
+echo ".bundle/" >> .gitignore
 git add .
 git commit -m "initial commit"
 cp -r ~/isucon-cheatsheet/script ./
 git add .
 git commit -m "add scripts"
-git branch -M master
-git remote add origin git@github.com:budougumi0617/xxxxx.git
-git push origin master
+git branch -M main
+git remote add origin git@github.com:budougumi0617/isucon12q.git
+git push origin main
 ```
 
 ここで1つissueを作っておくこと！！！
@@ -112,112 +114,20 @@ git push origin master
 
 ```bash
 # ローカルPCのrepoから実行すること
-./gh_push_memo.sh 1 "`ssh isu11A sudo cat /var/log/isucon/info.txt`"
+./gh_push_memo.sh 1 "`ssh isu11f_1 sudo cat /var/log/isucon/info.txt`"
 ```
 
 **終わったらここで一度再起動してAppArmorを無効化しておく。**
-
-### NewRelicのインストール
-#### インストールスクリプト実行からプラグインの設定など
-https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/linux-installation/install-infrastructure-monitoring-agent-linux/
-
-再度ログインしたら↑のリンクからNewrelic infraのインストールスクリプトを作ってインストールする。
-
-```bash
-echo "enable_process_metrics: true" | sudo tee -a /etc/newrelic-infra.yml
-sudo apt-get install nri-mysql
-```
-
-#### MySQLをモニタリング
-MySQL用のプラグインを導入する。
-
-```bash
-sudo mysql -e "CREATE USER 'newrelic'@'localhost' IDENTIFIED BY 'newrelic' WITH MAX_USER_CONNECTIONS 5;"
-sudo mysql -e "GRANT SELECT ON *.* TO 'newrelic'@'localhost';"
-sudo mysql -e "GRANT REPLICATION CLIENT ON *.* TO 'newrelic'@'localhost' WITH MAX_USER_CONNECTIONS 5;"
-sudo mysql -e "GRANT SELECT ON *.* TO 'newrelic'@'localhost' WITH MAX_USER_CONNECTIONS 5;"
-sudo cp /etc/newrelic-infra/integrations.d/mysql-config.yml.sample /etc/newrelic-infra/integrations.d/mysql-config.yml
-```
-
-YAMLは編集しておく。
-```yaml
-instances:
-  - name: mysql-server
-    command: status
-    arguments:
-        hostname: localhost
-        port: 3306
-        username: newrelic
-        password: newrelic # ここ！！！！！！！！！！！
-```
-
-
-#### ログをフォワードする
-```bash
-sudo cp /etc/newrelic-infra/logging.d/systemd.yml.example /etc/newrelic-infra/logging.d/logging.yml
-```
-
-こんな感じでログを取り込みたいサービスを確認する（OS再起動中に確認しておいてもいいかも）。
-```
-systemctl list-unit-files --type=service | grep isu
-```
-
-確認したら、こんな感じで設定ファイルを更新する。
-
-```yaml
-sudo vim /etc/newrelic-infra/logging.d/logging.yml
-cat /etc/newrelic-infra/logging.d/logging.yml
-logs:
-  - name: isuumo
-    systemd: isuumo.go
-```
-
-#### 環境変数を設定しておく
-APM用にNerelicのライセンスキーを環境変数にしておく。こんな感じで`EnvironmentFile`を調べて登録する。
-```
-$ cat /etc/systemd/system/isuumo.go.service
-[Unit]
-Description=isuumo.go
-
-[Service]
-WorkingDirectory=/home/isucon/isuumo/webapp/go
-EnvironmentFile=/home/isucon/env.sh
-PIDFile=/home/isucon/isuumo/webapp/go/server.pid
-
-User=isucon
-Group=isucon
-ExecStart=/home/isucon/isuumo/webapp/go/isuumo
-ExecStop=/bin/kill -s QUIT $MAINPID
-
-Restart   = always
-Type      = simple
-
-[Install]
-WantedBy=multi-user.target
-```
-
-ローカルからメモをしておいてもよいかも
-```bash
-# ./gh_push_memo.sh 1 "`ssh isu10A sudo cat /etc/systemd/system/isuumo.go.service`"
-./gh_push_memo.sh 1 "`ssh isu11A sudo cat /etc/systemd/system/xx`"
-```
-
-```bash
-cat ~/env_file
-echo "NEW_RELIC_LICENSE_KEY=??" >> ~/env_file
-```
-
-APMエージェントの導入は別でやるとして、一度再起動する。
-
-```bash
-sudo systemctl restart newrelic-infra.service
-```
-NewRelic Oneを見てもろもろのメトリクスが取得できているか確認する。
 
 ### 各middlewareの設定ファイルの更新
 #### git配下に入れて修正する。
 もろもろの設定ファイルをgit管理化に入れる。apparmorが死んでいればシンボリックリンクを使って設定ファイルを用意できる。  
 `git init`したディレクトリに移動して以下を実行する。
+
+
+```bash
+sudo systemctl disable apparmor
+```
 
 ```bash
 mkdir etc
@@ -254,6 +164,9 @@ MySQLらへんの設定はそもそもファイルがない、最初からシン
 !includedir /etc/mysql/mysql.conf.d/
 ```
 
+`/etc/mysql/mysql.conf.d/` らへんの `[mysqld]` の設定が最終的な設定になっている気がするので設定を変更するときはそちらを更新する。
+こちらに書いていない設定は消えている気がする。
+
 
 #### alp用のnginxの設定変更
 
@@ -278,6 +191,8 @@ MySQLらへんの設定はそもそもファイルがない、最初からシン
     access_log  /var/log/nginx/access.log ltsv;
 ```
 
+コメントアウトは `#` で。
+
 終わったら再起動
 ```
 sudo systemctl restart nginx
@@ -287,6 +202,8 @@ sudo systemctl status nginx
 
 #### MySQLの設定変更・情報取得
 my.cnfを変更しておく。
+
+https://gist.github.com/yoku0825/ea57b64d26dc645358f2de87f6ef8518
 
 **TODO: ここでもうbinlogとかの設定変更もしておく？？？？**
 
@@ -309,6 +226,12 @@ sudo chmod -R 777 /var/log/mysql
 
 ```bash
 sudo mysql -h 127.0.0.1 -uisucon -pisucon -e "grant all privileges on *.* to isucon@"%" identified by 'isucon' with grant option;"
+```
+
+MySQL8系の場合は↓かも
+```bash
+sudo mysql -h 127.0.0.1 -uisucon -pisucon -e "CREATE USER myuser@'%' IDENTIFIED BY 'password';"
+sudo mysql -h 127.0.0.1 -uisucon -pisucon -e "grant all privileges on *.* to isucon@\"%\" with grant option;"
 ```
 
 終わったら再起動する。

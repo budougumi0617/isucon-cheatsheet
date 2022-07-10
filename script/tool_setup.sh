@@ -86,11 +86,6 @@ bash <(curl -Ss https://my-netdata.io/kickstart.sh)
 sudo apt-get install percona-toolkit
 
 
-# after install newrelic
-#  echo "enable_process_metrics: true" | sudo tee -a /etc/newrelic-infra.yml
-echo "install newrelic from below link"
-echo "https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/linux-installation/install-infrastructure-monitoring-agent-linux/"
-
 # AppArmorを修正した場合は再起動が必要
 echo "need reboot!: sudo shutdown -r now"
 
