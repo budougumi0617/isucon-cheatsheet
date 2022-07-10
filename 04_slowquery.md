@@ -19,6 +19,8 @@ $ sudo systemctl restart mysql
 $ sudo systemctl restart isuumo.go
 ```
 
+最後に読み込んだ `[mysqld]` によって設定が上書き（最悪消されている）ような挙動をしているので注意する。
+
 ## スロークエリを確認する
 ベンチマーク実行前にトランケートしておく
 ```bash
