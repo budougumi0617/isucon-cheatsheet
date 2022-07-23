@@ -67,7 +67,7 @@ cat ~/.ssh/id_ed25519.pub
 
 `cat`した結果をrepoのdeploy keyに設定しておく。
 
-https://github.com/budougumi0617/xxxxx/settings/keys
+https://github.com/budougumi0617/isucon12q/settings/keys
 
 **Allow write accessのチェックを有効にして登録することを忘れないこと！**
 
@@ -240,7 +240,7 @@ systemctl list-unit-files --type=service | grep sql
 mysql.service                                  enabled
 
 sudo systemctl restart mysql
-sudo systemctl restart isuumo.go
+sudo systemctl restart isuports.go
 ```
 
 設定が変わっているか確認する。
@@ -253,13 +253,13 @@ mysql -uisucon -pisucon -e "show variables like 'slow_query%';"
 # DBの名前を確認する
 mysql -uisucon -pisucon -e "show databases;"
 mysqldump --single-transaction -u isucon -pisucon DB_NAME > /tmp/isucon_dump.sql
-mysql -uisucon -pisucon isuumo -e "SELECT table_name, engine, table_rows, avg_row_length, floor((data_length+index_length)/1024/1024) as allMB, floor((data_length)/1024/1024) as dMB, floor((index_length)/1024/1024) as iMB FROM information_schema.tables WHERE table_schema=database() ORDER BY (data_length+index_length) DESC;" > /tmp/isucon/mysql_data_size.txt
+mysql -uisucon -pisucon isuports -e "SELECT table_name, engine, table_rows, avg_row_length, floor((data_length+index_length)/1024/1024) as allMB, floor((data_length)/1024/1024) as dMB, floor((index_length)/1024/1024) as iMB FROM information_schema.tables WHERE table_schema=database() ORDER BY (data_length+index_length) DESC;" > /tmp/isucon/mysql_data_size.txt
 ```
 
 リモートアクセスできるようになったらローカルPCのgit repoで以下のコマンドを使ってテーブル情報を作っておく。
 さっきのデータ量もローカルPCからissueにコメントしておく
 ```bash
-tbls doc my://isucon:isucon@${REMOTE_HOST}:3306/isuumo ./doc/schema
+tbls doc my://isucon:isucon@${REMOTE_HOST}:3306/isuports ./doc/schema
 ./gh_push_memo.sh 1 "`ssh isu11A cat /tmp/isucon/mysql_data_size.txt`"
 ```
 
@@ -270,7 +270,7 @@ tbls doc my://isucon:isucon@${REMOTE_HOST}:3306/isuumo ./doc/schema
 
 ```
 # こんな感じの設定を書いておく。
-issumo: *isuumo*
+isuports: *isuports*
 ```
 
 https://app.netdata.cloud/ を開いてadd nodesしておく。  
@@ -283,17 +283,17 @@ sudo systemctl restart netdata
 ### Makefile書く
 ベンチマーク実行時の流れなどをMakefileに書いておくこと
 ```
-all: isuumo
+all: isuports
 
-isuumo: *.go
-        GOOS=linux GOARCH=amd64 go build -o isuumo
+isuports: *.go
+        GOOS=linux GOARCH=amd64 go build -o isuports
 
 bench:
         sudo truncate --size 0 /var/log/mysql/slow.log
         sudo truncate --size 0 /var/log/nginx/access.log
         sudo systemctl restart nginx.service
-        sudo systemctl restart isuumo.go
-        cd ~/isuumo/bench; ./bench --target-url http://localhost:80
+        sudo systemctl restart isuports.go
+        cd ~/isuports/bench; ./bench --target-url http://localhost:80
 
 alp:
         alp -c alp.yaml ltsv

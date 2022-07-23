@@ -18,7 +18,7 @@ $ systemctl list-unit-files --type=service | grep sql
 mysql.service                                  enabled
 
 $ sudo systemctl restart mysql
-$ sudo systemctl restart isuumo.go
+$ sudo systemctl restart isuports.go
 ```
 
 ## リモートアクセスを許可する
@@ -29,7 +29,7 @@ $ cat env.sh
 MYSQL_HOST="127.0.0.1"
 MYSQL_PORT=3306
 MYSQL_USER=isucon
-MYSQL_DBNAME=isuumo
+MYSQL_DBNAME=isuports
 MYSQL_PASS=isucon
 $ mysql -h 127.0.0.1 -uisucon -pisucon
 > grant all privileges on *.* to isucon@"%" identified by 'isucon' with grant option;
@@ -45,23 +45,23 @@ mysql: [Warning] Using a password on the command line interface can be insecure.
 | Database           |
 +--------------------+
 | information_schema |
-| isuumo             |
+| isuports             |
 | mysql              |
 | performance_schema |
 | sys                |
 +--------------------+
 
-$ mysqldump --single-transaction -u isucon -pisucon isuumo > /tmp/isuumo_dump.sql
+$ mysqldump --single-transaction -u isucon -pisucon isuports > /tmp/isuports_dump.sql
 ```
 
 ローカルで
 ```bash
-$ scp isu10A:/tmp/isuumo_dump.sql .
+$ scp isu10A:/tmp/isuports_dump.sql .
 ```
 
 ## データ量
 ```bash
-$ mysql -uisucon -pisucon isuumo -e "SELECT table_name, engine, table_rows, avg_row_length, floor((data_length+index_length)/1024/1024) as allMB, floor((data_length)/1024/1024) as dMB, floor((index_length)/1024/1024) as iMB FROM information_schema.tables WHERE table_schema=database() ORDER BY (data_length+index_length) DESC;"
+$ mysql -uisucon -pisucon isuports -e "SELECT table_name, engine, table_rows, avg_row_length, floor((data_length+index_length)/1024/1024) as allMB, floor((data_length)/1024/1024) as dMB, floor((index_length)/1024/1024) as iMB FROM information_schema.tables WHERE table_schema=database() ORDER BY (data_length+index_length) DESC;"
 mysql: [Warning] Using a password on the command line interface can be insecure.
 +------------+--------+------------+----------------+-------+------+------+
 | table_name | engine | table_rows | avg_row_length | allMB | dMB  | iMB  |
@@ -76,7 +76,7 @@ mysql: [Warning] Using a password on the command line interface can be insecure.
 リモートから接続できるようになっていれば、ローカルで生成できる。
 
 ```bash
-$ tbls doc my://isucon:isucon@${REMOTE_HOST}:3306/isuumo ./doc/schema
+$ tbls doc my://isucon:isucon@${REMOTE_HOST}:3306/isuports ./doc/schema
 ```
 
 ## チューニング

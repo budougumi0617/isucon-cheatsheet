@@ -41,8 +41,8 @@ https://learn.netdata.cloud/docs/configure/nodes#netdatas-configuration-files
 
 ```bash
 $ sudo rm /etc/netdata/netdata.conf
-$ sudo ln -s ~/isuumo/etc/netdata/netdata.conf /etc/netdata/netdata.conf
-$ sudo ln -s ~/isuumo/etc/netdata/apps_groups.conf /etc/netdata/apps_groups.conf
+$ sudo ln -s ~/isuports/etc/netdata/netdata.conf /etc/netdata/netdata.conf
+$ sudo ln -s ~/isuports/etc/netdata/apps_groups.conf /etc/netdata/apps_groups.conf
 $ sudo systemctl restart netdata
 ```
 
@@ -75,7 +75,7 @@ Node was successfully claimed.
 
 ```bash
 $ pwd
-/home/isucon/isuumo/bench
+/home/isucon/isuports/bench
 $ ./bench --target-url http://localhost:80
 ```
 

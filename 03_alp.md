@@ -39,7 +39,7 @@ nginxの設定を変更する。
 ```
 スニペット用意したならばこれでもよい。
 ```bash
-sudo ln -s ~/isuumo/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+sudo ln -s ~/isuports/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 ```
 
 ## ngninxを再起動する
